@@ -1,0 +1,50 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="iris-button-group">
+  <template>
+    <style>
+      :host {
+        display: block;
+        @apply(--shadow-elevation-2dp);
+      }
+      
+      paper-button {
+        @apply(--iris-button-group-button);
+      }
+    </style>
+    <template is="dom-repeat" items="[[buttons]]" as="button">
+      <paper-button active$="[[isButtonActive(index,selected)]]" on-tap="selectButton" toggles>[[button.label]]</paper-button>
+    </template>
+  </template>
+  <script>
+    'use strict'
+    Polymer({
+      is: 'iris-button-group',
+      properties: {
+        buttons: {
+          type: Array
+        },
+        mulitselect: {
+          type: Boolean,
+          value: false
+        },
+        raised: {
+          type: Boolean,
+          value: false
+        },
+        selected: {
+          type: Object
+        }
+      },
+      isButtonActive(index, selected) {
+        console.log(this.mulitselect, index == selected);
+        if (!this.mulitselect) return index == selected;
+      },
+      selectButton(e) {
+        let button = e.model.button;
+        console.log(e);
+        if (!this.mulitselect) this.set('selected', e.model.index);
+      }
+    });
+  </script>
+</dom-module>
