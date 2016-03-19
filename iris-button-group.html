@@ -4,16 +4,25 @@
   <template>
     <style>
       :host {
-        display: block;
+        @apply(--layout-horizontal);
         @apply(--shadow-elevation-2dp);
+        border-radius: 3px;
+        overflow: hidden;
       }
       
       paper-button {
+        border-radius: 0;
+        margin: 0;
         @apply(--iris-button-group-button);
+      }
+      
+      paper-button[active] {
+        background-color: var(--google-grey-500);
+        @apply(--iris-button-group-button-active);
       }
     </style>
     <template is="dom-repeat" items="[[buttons]]" as="button">
-      <paper-button active$="[[isButtonActive(index,selected)]]" on-tap="selectButton" toggles>[[button.label]]</paper-button>
+      <paper-button active="[[isButtonActive(index, selectedIndex)]]" on-tap="selectButton">[[button.label]]</paper-button>
     </template>
   </template>
   <script>
@@ -32,18 +41,29 @@
           type: Boolean,
           value: false
         },
+        selectedIndex: {
+          type: Number,
+          notify: true
+        },
         selected: {
-          type: Object
+          type: Object,
+          notify: true
         }
       },
+      observers: ['_selectedChange(selected,buttons)'],
+      _selectedChange(selected, buttons) {
+        this.set('selectedIndex', _.findIndex(buttons, button => button.code == selected));
+      },
       isButtonActive(index, selected) {
-        console.log(this.mulitselect, index == selected);
         if (!this.mulitselect) return index == selected;
       },
       selectButton(e) {
         let button = e.model.button;
-        console.log(e);
-        if (!this.mulitselect) this.set('selected', e.model.index);
+        let info = e.model.button.code ? e.model.button.code : e.model.index;
+
+        if (!this.mulitselect) this.set('selectedIndex', e.model.index);
+        this.set('selected', info);
+        this.fire('select', info);
       }
     });
   </script>
