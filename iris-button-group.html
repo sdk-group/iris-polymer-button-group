@@ -48,6 +48,10 @@
         selected: {
           type: Object,
           notify: true
+        },
+        dataSelect: {
+          type: String,
+          value: 'code'
         }
       },
       observers: ['_selectedChange(selected,buttons)'],
@@ -59,11 +63,11 @@
       },
       selectButton(e) {
         let button = e.model.button;
-        let info = e.model.button.code ? e.model.button.code : e.model.index;
+        let info = this.dataSelect ? button[this.dataSelect] : e.model.index;
 
         if (!this.mulitselect) this.set('selectedIndex', e.model.index);
+
         this.set('selected', info);
-        this.fire('select', info);
       }
     });
   </script>
