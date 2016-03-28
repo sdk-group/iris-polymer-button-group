@@ -59,13 +59,16 @@
         this.set('selectedIndex', _.findIndex(buttons, button => button.code == selected));
       },
       isButtonActive(index, selected) {
+        console.log(index, selected);
         if (!this.mulitselect) return index == selected;
       },
       selectButton(e) {
+        let target = e.target;
         let button = e.model.button;
         let info = this.dataSelect ? button[this.dataSelect] : e.model.index;
 
         if (!this.mulitselect) this.set('selectedIndex', e.model.index);
+        target.setAttribute('active', true);
 
         this.set('selected', info);
       }
