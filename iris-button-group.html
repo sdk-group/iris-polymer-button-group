@@ -56,7 +56,7 @@
       },
       observers: ['_selectedChange(selected,buttons)'],
       _selectedChange(selected, buttons) {
-        this.set('selectedIndex', _.findIndex(buttons, button => button.code == selected));
+        this.set('selectedIndex', _.findIndex(buttons, button => button[this.dataSelect] == selected));
       },
       isButtonActive(index, selected) {
         if (!this.mulitselect) return index == selected;
